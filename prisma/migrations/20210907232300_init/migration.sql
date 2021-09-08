@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "Wallet" (
+CREATE TABLE IF NOT EXISTS "Wallet" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

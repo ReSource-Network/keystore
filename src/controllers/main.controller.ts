@@ -27,24 +27,14 @@ export const main: Controller = ({ prisma }) => {
       });
 
     try {
-      const walletExists = await prisma.wallet.findUnique({
+      const created = await prisma.wallet.upsert({
         where: { walletId: wallet },
+        update: { key: data },
+        create: {
+          walletId: wallet,
+          key: data,
+        },
       });
-
-      let created;
-      if (walletExists) {
-        created = await prisma.wallet.update({
-          where: { id: walletExists.id },
-          data,
-        });
-      } else {
-        created = await prisma.wallet.create({
-          data: {
-            walletId: wallet,
-            key: data,
-          },
-        });
-      }
 
       if (!created) {
         return res.status(500).send({
