@@ -38,7 +38,7 @@ jobs:
       - name: Deploy to server
         env:
           DOCKER_IMAGE: staging-keystore
-          host: 18.188.125.148
+          host: 18.118.144.170
           username: ubuntu
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
