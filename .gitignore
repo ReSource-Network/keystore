@@ -21,7 +21,7 @@ src/services/ledger/types/
 dist/
 src/generated
 
-logs
+logs/
 
 # misc
 .eslintcache
