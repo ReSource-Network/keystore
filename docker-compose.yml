@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   postgresql:
-    container_name: guardian-pg
+    container_name: keystore-postgres
     image: postgres
     ports:
       - "127.0.0.1:5432:5432"

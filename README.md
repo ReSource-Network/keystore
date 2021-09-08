@@ -1,1 +1,1 @@
-# Express Typescript Prisma Server Starter
+# ReSource Network 'Keystore' for managing users encrypted private keys

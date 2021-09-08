@@ -10,10 +10,6 @@ export function fetchConfig() {
     NODE_ENV: process.env.NODE_ENV!,
     PORT: parseInt(process.env.PORT!),
     POSTGRES: process.env.POSTGRES!,
-    JWT_SECRET: process.env.JWT_SECRET!,
-    TOTP_SECRET: process.env.TOTP_SECRET!,
-    SENTRY_DSN: process.env.SENTRY_DSN!,
-    JWT: process.env.JWT!,
   };
 }
 

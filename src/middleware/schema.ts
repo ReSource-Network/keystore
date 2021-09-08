@@ -1,23 +1,33 @@
 import * as yup from "yup";
+import { log } from "../services";
 
-export const createSchema = yup
+export const storeSchema = yup
   .object()
   .shape({
-    link: yup.string().required(),
+    wallet: yup.string().required(),
+    data: yup.string().required(),
   })
   .required();
 
-export const reservedSchema = yup
+export const retrieveSchema = yup
   .object()
   .shape({
-    link: yup.string().required(),
-    route: yup.string().required(),
+    wallet: yup.string().required(),
   })
   .required();
 
-export const removeSchema = yup
-  .object()
-  .shape({
-    id: yup.string().required(),
-  })
-  .required();
+export const validate = (schema) => async (req, res, next) => {
+  const body = req.body;
+  try {
+    await schema.validate(body);
+    next();
+  } catch (e) {
+    log.debug("Error validating request body schema:");
+    log.error(e.message);
+
+    return res.status(400).json({
+      ERROR: true,
+      MESSAGE: "SCHEMA VALIDATION ERROR: " + e.message,
+    });
+  }
+};

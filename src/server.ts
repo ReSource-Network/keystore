@@ -1,14 +1,10 @@
+import cors from "cors";
 import express from "express";
 import morgan from "morgan";
-import cors from "cors";
 
-import { isProd } from "./config";
 import { Controller, ControllerDeps } from "./controllers/types";
-import { auth } from "./middleware/auth";
 import { limitMw, slowMw } from "./middleware";
-import { redirect } from "./services/link";
 import { log } from "./services";
-import helmet from "helmet";
 
 export const createServer = (
   dependencies: ControllerDeps,
@@ -35,9 +31,6 @@ export const createServer = (
   app.use(slowMw);
   app.use(limitMw);
 
-  // auth middleware
-  app.use(auth);
-
   // loggin middleware
   app.use(morgan("dev"));
 
@@ -46,16 +39,6 @@ export const createServer = (
     const controller = setupController(dependencies);
     app.use(controller.path, controller.router);
   }
-  // base redirect route
-  app.get("/:id", async (req, res) => {
-    const { id } = req.params;
-
-    const { link } = await redirect({ id, prisma });
-
-    if (!link) return res.redirect("https://app.resourcenetwork.co/login");
-
-    return res.redirect(link);
-  });
 
   return app;
 };

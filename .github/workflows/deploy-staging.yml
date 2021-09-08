@@ -1,10 +1,8 @@
-name: Deploy - Main
-
+name: Deploy - Production
 on:
   push:
     branches:
-      - main
-
+      - staging
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -25,7 +23,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          DOCKER_IMAGE: shortlink
+          DOCKER_IMAGE: staging-keystore
         run: |
           aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 446481105531.dkr.ecr.us-east-2.amazonaws.com
           docker build -t $DOCKER_IMAGE:latest .
@@ -39,17 +37,17 @@ jobs:
           ssh-add - <<< "${{ secrets.DEPLOY_SSH_KEY }}"
       - name: Deploy to server
         env:
-          DOCKER_IMAGE: shortlink
-          host: 18.117.86.251
-          username: ec2-user
+          DOCKER_IMAGE: staging-keystore
+          host: 18.188.125.148
+          username: ubuntu
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           ssh -o StrictHostKeyChecking=no $username@$host << EOF
             aws ecr get-login-password | sudo docker login --username AWS --password-stdin 446481105531.dkr.ecr.us-east-2.amazonaws.com
             sudo docker pull "446481105531.dkr.ecr.us-east-2.amazonaws.com/$DOCKER_IMAGE:latest"
-            sudo docker ps -f name=shortlink -q | xargs --no-run-if-empty sudo docker rm -f
-            sudo docker run --name $DOCKER_IMAGE --env-file=/home/ec2-user/.env --network="host" -p 80:80 -d --restart always "446481105531.dkr.ecr.us-east-2.amazonaws.com/$DOCKER_IMAGE:latest"
-            sudo docker exec shortlink yarn db:migrate:prod
+            sudo docker ps -f name=staging-keystore -q | xargs --no-run-if-empty sudo docker rm -f
+            sudo docker run --name $DOCKER_IMAGE --env-file=/home/ubuntu/.env --network="host" -p 80:80 -d --restart always "446481105531.dkr.ecr.us-east-2.amazonaws.com/$DOCKER_IMAGE:latest"
+            sudo docker exec staging-keystore yarn db:migrate:prod
             sudo docker system prune -f
           EOF
