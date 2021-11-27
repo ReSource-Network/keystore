@@ -47,7 +47,7 @@ export const main: Controller = ({ prisma }) => {
         wallet: created,
         error: false,
       });
-    } catch (e) {
+    } catch (e: any) {
       log.debug("Error storing key:");
       log.error(e);
 
@@ -85,7 +85,7 @@ export const main: Controller = ({ prisma }) => {
         data: exists.key,
         error: false,
       });
-    } catch (e) {
+    } catch (e: any) {
       log.debug("Error retrieving wallet:");
       log.error(e);
 

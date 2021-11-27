@@ -10,7 +10,7 @@
     "fetch-env": "bin/fetchEnv.sh keystore",
     "build": "tsc",
     "build:watch": "tsc -w",
-    "prebuild": "run-s clean generate:*",
+    "prebuild": "yarn run clean && yarn run generate",
     "clean": "yarn rimraf dist",
     "generate": "yarn prisma generate",
     "db:seed": "yarn prisma db seed --preview-feature",
