@@ -2,26 +2,17 @@ version: "3.7"
 
 services:
   db:
-    container_name: db
+    container_name: keystore-db
     image: postgres
-    ports:
-      - "127.0.0.1:5432:5432"
-    environment:
-      - "POSTGRES_PASSWORD=resource"
-      - "POSTGRES_USER=resource"
+    network_mode: "host"
     volumes:
       - pg_data:/var/lib/postgresql/data
-
   api:
-    container_name: api
-    image: 446481105531.dkr.ecr.us-east-2.amazonaws.com/development-keystore:latest
+    container_name: keystore-api
+    image: ${DOCKER_IMAGE_URL}
+    network_mode: "host"
     restart: always
     env_file: .env
-    ports:
-      - 4003:4003
-    environment:
-      - "POSTGRES_PASSWORD=resource"
-      - "POSTGRES_USER=resource"
 
 volumes:
   pg_data:
