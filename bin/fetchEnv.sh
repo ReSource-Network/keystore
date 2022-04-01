@@ -1,6 +1,6 @@
 #!/bin/sh
 application=$1 
-environment=$2 
+environment=${2:-development}
 
 path="/env/${environment}/${application}" 
 
