@@ -64,5 +64,5 @@ yarn run db:push
 
 ```
 yarn run build:watch
-yarn run start:dev       ### or yarn run start:dev:local after setting up variables in .env.local
+yarn run start:watch
 ```
